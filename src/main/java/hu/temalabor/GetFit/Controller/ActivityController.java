@@ -30,7 +30,7 @@ public class ActivityController {
     }
 
     @GetMapping("/userId={id}")
-    public Optional<Activity> GetActivityByUserId(@PathVariable(value = "id") int id){
+    public List<Activity> GetActivityByUserId(@PathVariable(value = "id") int id){
         return activityRepository.findByUserId(id);
     }
 

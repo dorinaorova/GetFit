@@ -31,7 +31,7 @@ public class GoalContoroller {
     }
 
     @GetMapping("/uesrId={id}")
-    Optional<Goal> GetGoalByUserId(@PathVariable(value = "id") int id){
+    List<Goal> GetGoalByUserId(@PathVariable(value = "id") int id){
         return goalRepository.findByUserId(id);
     }
 

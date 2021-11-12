@@ -12,18 +12,18 @@ public class Goal {
     private int _id;
     private int Type;
     private int Amount;
-    private int UserId;
+    private int userId;
     private Date DateStart;
     private int CurrentAmount;
     private int Status;
     private int Distance;
 
-    public Goal(int _id, int Amount, int UserId, Date DateStart) {
+    public Goal(int _id, int Amount, int userId, Date DateStart) {
         super();
         this._id = _id;
         Type = 0;
         this.Amount = Amount;
-        this.UserId = UserId;
+        this.userId = userId;
         this.DateStart = DateStart;
         this.CurrentAmount = 0;
         SetStatus();
@@ -60,7 +60,7 @@ public class Goal {
     }
 
     public int getUserId() {
-        return UserId;
+        return userId;
     }
 
     public Date getDateStart() {
@@ -93,7 +93,7 @@ public class Goal {
     }
 
     public void setUserId(int userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public void setDateStart(Date dateStart) {
