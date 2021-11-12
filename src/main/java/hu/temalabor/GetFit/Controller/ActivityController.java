@@ -29,6 +29,11 @@ public class ActivityController {
         return activityRepository.findById(id);
     }
 
+    @GetMapping("/userId={id}")
+    public Optional<Activity> GetActivityByUserId(@PathVariable(value = "id") int id){
+        return activityRepository.findByUserId(id);
+    }
+
     @GetMapping("/week={date}/{id}")
     public List<Activity> GetActivitiesForAWeek(@PathVariable(value = "date") Date date, @PathVariable(value = "id") int id){
         List<Activity> activities = activityRepository.findAll();

@@ -24,11 +24,15 @@ public class GoalContoroller {
         return goalRepository.findAll();
     }
 
-    //Egy Sport kerese id alapjan
+    //Egy Goal kerese id alapjan
     @GetMapping("/{id}")
-    @ResponseBody
     Optional<Goal> GetGoalById(@PathVariable(value = "id") int id){
         return goalRepository.findById(id);
+    }
+
+    @GetMapping("/uesrId={id}")
+    Optional<Goal> GetGoalByUserId(@PathVariable(value = "id") int id){
+        return goalRepository.findByUserId(id);
     }
 
 

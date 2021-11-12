@@ -16,6 +16,7 @@ public class Goal {
     private Date DateStart;
     private int CurrentAmount;
     private int Status;
+    private int Distance;
 
     public Goal(int _id, int Amount, int UserId, Date DateStart) {
         super();
@@ -100,4 +101,11 @@ public class Goal {
     }
 
 
+    public int getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(int distance) {
+        Distance = distance;
+    }
 }
