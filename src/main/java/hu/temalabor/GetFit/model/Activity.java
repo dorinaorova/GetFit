@@ -16,6 +16,8 @@ public class Activity {
     private double Kcal;             //elegetett kaloriak
     private Sport sport;
     private User user;
+    private double Distance;
+
 
     public Activity(int _id, int SportId, int userId, double Time, Date Date) {
         super();
@@ -24,7 +26,6 @@ public class Activity {
         this.userId = userId;
         this.Time = Time;
         this.Date = Date;
-
     }
 
 
@@ -78,5 +79,13 @@ public class Activity {
 
     public double getKcal() {
         return Kcal;
+    }
+
+    public double getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(double distance) {
+        Distance = distance;
     }
 }

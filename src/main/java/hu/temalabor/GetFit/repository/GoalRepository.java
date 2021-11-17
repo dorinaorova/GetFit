@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface GoalRepository extends MongoRepository<Goal, Integer> {
     List<Goal> findByUserId(int id);
+
 }

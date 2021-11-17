@@ -16,7 +16,6 @@ public class Goal {
     private Date DateStart;
     private int CurrentAmount;
     private int Status;
-    private int Distance;
 
     public Goal(int _id, int Amount, int userId, Date DateStart) {
         super();
@@ -27,18 +26,6 @@ public class Goal {
         this.DateStart = DateStart;
         this.CurrentAmount = 0;
         SetStatus();
-    }
-
-
-    public int GetType(){
-        return Type;
-    }
-    public int Amount(){
-        return Amount;
-    }
-
-    public int CurrentAmount(){
-        return CurrentAmount;
     }
 
     public void SetStatus(){
@@ -89,7 +76,7 @@ public class Goal {
     }
 
     public void setCurrentAmount(int currentAmount) {
-        CurrentAmount = currentAmount;
+        CurrentAmount += currentAmount;
     }
 
     public void setUserId(int userId) {
@@ -100,12 +87,4 @@ public class Goal {
         DateStart = dateStart;
     }
 
-
-    public int getDistance() {
-        return Distance;
-    }
-
-    public void setDistance(int distance) {
-        Distance = distance;
-    }
 }

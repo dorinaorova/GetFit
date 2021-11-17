@@ -1,13 +1,7 @@
 package hu.temalabor.GetFit;
 
-import hu.temalabor.GetFit.model.Activity;
-import hu.temalabor.GetFit.model.Goal;
-import hu.temalabor.GetFit.model.Sport;
-import hu.temalabor.GetFit.model.User;
-import hu.temalabor.GetFit.repository.ActivityRepository;
-import hu.temalabor.GetFit.repository.GoalRepository;
-import hu.temalabor.GetFit.repository.SportRepository;
-import hu.temalabor.GetFit.repository.UserRepository;
+import hu.temalabor.GetFit.model.*;
+import hu.temalabor.GetFit.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,6 +41,16 @@ public class MongoConfig {
         return String ->{
             activityRepository.save(new Activity(1, 1, 1, 60, new Date(2021,10,22)));
             activityRepository.save(new Activity(2, 2, 1, 30, new Date(2021,10,23)));
+        };
+    }
+
+    @Bean
+    CommandLineRunner commandLineRunnerCounter(CounterRepository counterRepository){
+        return String ->{
+            counterRepository.save(new Counter("Activity", 2));
+            counterRepository.save(new Counter("Sport", 2));
+            counterRepository.save(new Counter("User", 2));
+            counterRepository.save(new Counter("Goal", 2));
         };
     }
 }
