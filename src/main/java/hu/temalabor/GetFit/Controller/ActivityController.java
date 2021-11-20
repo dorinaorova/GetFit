@@ -108,14 +108,15 @@ public class ActivityController {
                 }
             }
         }
+        if(goal!=null) {
+            goal.setAmount(1);
 
-        goal.setAmount(1);
-
-        Optional<Goal> goalData = goalRepository.findById(goal.get_id());
-        if(goalData.isPresent()){
-            Goal uGoal = goalData.get();
-            uGoal=goal;
-            goalRepository.save(uGoal);
+            Optional<Goal> goalData = goalRepository.findById(goal.get_id());
+            if (goalData.isPresent()) {
+                Goal uGoal = goalData.get();
+                uGoal = goal;
+                goalRepository.save(uGoal);
+            }
         }
     }
 
