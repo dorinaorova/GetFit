@@ -86,7 +86,6 @@ public class ActivityController {
         newActivity.set_id(cnt.getCounter());
         activityRepository.save(newActivity);
 
-        activityRepository.save(newActivity);
 
         List<Goal> goals = goalRepository.findByUserId(newActivity.getUserId());
 

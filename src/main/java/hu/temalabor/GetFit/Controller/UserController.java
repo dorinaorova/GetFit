@@ -63,7 +63,6 @@ public class UserController {
         }
         newUser.set_id(cnt.getCounter());
         userRepository.save(newUser);
-        userRepository.save(newUser);
     }
 
     @PutMapping("/{id}")
