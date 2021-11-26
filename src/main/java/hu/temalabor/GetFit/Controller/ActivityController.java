@@ -9,6 +9,7 @@ import hu.temalabor.GetFit.repository.CounterRepository;
 import hu.temalabor.GetFit.repository.GoalRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
@@ -58,7 +59,8 @@ public class ActivityController {
 
         for(Activity a : activities){
             Calendar cal = calendar.getInstance();
-            cal.setTime(a.getDate());
+            Timestamp ts = new Timestamp(a.getDate());
+            cal.setTime(new Date(ts.getTime()));
             cal.add(Calendar.DATE, -7); //8?
 
             if(id == a.getUserId() && calendar.after(cal)){
@@ -91,13 +93,15 @@ public class ActivityController {
 
         Goal goal=null;
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(newActivity.getDate());
+        Timestamp ts = new Timestamp(newActivity.getDate());
+        calendar.setTime(new Date(ts.getTime()));
         int days= calendar.get(Calendar.DAY_OF_WEEK);
         calendar.add(Calendar.DATE,-days); //first day of week
 
         for(Goal a : goals){
             Calendar cal = calendar.getInstance();
-            cal.setTime(a.getDateStart());
+            Timestamp ts_goal = new Timestamp(a.getDateStart());
+            cal.setTime(new Date(ts_goal.getTime()));
             cal.add(Calendar.DATE, -7); //8?
 
             if(newActivity.getUserId() == a.getUserId() && calendar.after(cal)){

@@ -7,6 +7,7 @@ import hu.temalabor.GetFit.repository.CounterRepository;
 import hu.temalabor.GetFit.repository.GoalRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @RestController
@@ -49,7 +50,8 @@ public class GoalContoroller {
 
         for(Goal a : goals){
             Calendar cal = calendar.getInstance();
-            cal.setTime(a.getDateStart());
+            Timestamp ts = new Timestamp(a.getDateStart());
+            cal.setTime(new Date(ts.getTime()));
             cal.add(Calendar.DATE, -7); //8?
 
             if(id == a.getUserId() && calendar.after(cal)){

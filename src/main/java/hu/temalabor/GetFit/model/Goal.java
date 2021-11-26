@@ -3,6 +3,7 @@ package hu.temalabor.GetFit.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,11 +14,11 @@ public class Goal {
     private int Type;
     private int Amount;
     private int userId;
-    private Date DateStart;
+    private long DateStart;
     private int CurrentAmount;
     private int Status;
 
-    public Goal(int _id, int Amount, int userId, Date DateStart) {
+    public Goal(int _id, int Amount, int userId, long DateStart) {
         super();
         this._id = _id;
         Type = 0;
@@ -30,7 +31,8 @@ public class Goal {
 
     public void SetStatus(){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(DateStart);
+        Timestamp ts = new Timestamp(DateStart);
+        cal.setTime(new Date(ts.getTime()));
         cal.add(Calendar.DATE, 7);
         if (Calendar.getInstance().after(cal) && CurrentAmount<Amount) Status =0;   //lejart az egy het, nem sikerult teljesiteni
         else if(CurrentAmount>=Amount) Status = 1;                                  //teljesitette
@@ -50,7 +52,7 @@ public class Goal {
         return userId;
     }
 
-    public Date getDateStart() {
+    public long getDateStart() {
         return DateStart;
     }
 
@@ -83,7 +85,7 @@ public class Goal {
         this.userId = userId;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(long dateStart) {
         DateStart = dateStart;
     }
 

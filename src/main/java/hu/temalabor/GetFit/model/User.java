@@ -106,8 +106,8 @@ public class User {
         Gender = gender;
     }
 
-    public void setLevel(int level) {
-        Level = level;
+    public void setLevel() {
+        Level = Points/10;
     }
 
     public void setPassword(String password) {
@@ -121,4 +121,6 @@ public class User {
     public void setWeight(int weight) {
         Weight = weight;
     }
+
+
 }
