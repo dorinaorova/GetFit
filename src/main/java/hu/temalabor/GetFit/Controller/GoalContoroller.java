@@ -40,23 +40,25 @@ public class GoalContoroller {
     }
 
     @GetMapping("/date={date}/{id}")
-    List<Goal> GetGoalForAWeek(@PathVariable(value="date") Date date, @PathVariable(value="id") int id){
+    List<Goal> GetGoalForAWeek(@PathVariable(value="date") long date, @PathVariable(value="id") int id){
+        //find goals by user id: --> user's goals
         List<Goal> goals =goalRepository.findByUserId(id);
-        List<Goal> goalsForAWeek = new ArrayList<>();
+        List<Goal> goalsForAWeek = new ArrayList<>(); //empty list
+
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime( new Timestamp(date));
         int days= calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE,-days); //first day of week
+        calendar.add(Calendar.DATE,-days+calendar.getFirstDayOfWeek()); //first day of week
 
         for(Goal a : goals){
-            Calendar cal = calendar.getInstance();
-            Timestamp ts = new Timestamp(a.getDateStart());
+            Calendar cal = Calendar.getInstance();
+            Timestamp ts = new Timestamp(a.getDateStart()); //the day when the goal started
             cal.setTime(new Date(ts.getTime()));
-            cal.add(Calendar.DATE, -7); //8?
+            //cal.add(Calendar.DATE, -7); //7 days before the goal started
 
-            if(id == a.getUserId() && calendar.after(cal)){
-                cal.add(Calendar.DATE, 7); //9?
-                if(calendar.before(cal))  goalsForAWeek.add(a);
+            if(calendar.before(cal)){
+                calendar.add(Calendar.DATE, 7); //9?
+                if(calendar.after(cal))  goalsForAWeek.add(a);
             }
         }
         return goalsForAWeek;

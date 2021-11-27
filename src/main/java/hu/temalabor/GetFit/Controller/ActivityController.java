@@ -43,29 +43,36 @@ public class ActivityController {
         return activityRepository.findByUserId(id);
     }
 
-    @GetMapping("/sportId={id}")
-    public List<Activity> GetActivityBySportId(@PathVariable(value = "id") int id){
-        return activityRepository.findBySportId(id);
+    @GetMapping("/id={id}/sportId={sportid}")
+    public List<Activity> GetActivityBySportId(@PathVariable(value = "sportid") int id){
+        List<Activity> activitiesBySportID= activityRepository.findBySportId(id);
+        List<Activity> activities = new ArrayList<>();
+        for(Activity a: activitiesBySportID){
+            if(a.getUserId()==id){
+                activities.add(a);
+            }
+        }
+        return activities;
     }
 
     @GetMapping("/week={date}/{id}")
-    public List<Activity> GetActivitiesForAWeek(@PathVariable(value = "date") Date date, @PathVariable(value = "id") int id){
+    public List<Activity> GetActivitiesForAWeek(@PathVariable(value = "date") long date, @PathVariable(value = "id") int id){
         List<Activity> activities = activityRepository.findByUserId(id);
         List<Activity> activitiesForAWeek = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+        calendar.setTime( new Timestamp(date));
         int days= calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE,-days); //first day of week
+        calendar.add(Calendar.DATE,-days+calendar.getFirstDayOfWeek()); //first day of week
 
         for(Activity a : activities){
-            Calendar cal = calendar.getInstance();
+            Calendar cal = Calendar.getInstance();
             Timestamp ts = new Timestamp(a.getDate());
             cal.setTime(new Date(ts.getTime()));
-            cal.add(Calendar.DATE, -7); //8?
+            //cal.add(Calendar.DATE, -7); //8?
 
-            if(id == a.getUserId() && calendar.after(cal)){
-                cal.add(Calendar.DATE, 7); //9?
-                if(calendar.before(cal))  activitiesForAWeek.add(a);
+            if(calendar.before(cal)){
+                calendar.add(Calendar.DATE, 7); //9?
+                if(calendar.after(cal))  activitiesForAWeek.add(a);
             }
         }
         return activitiesForAWeek;
