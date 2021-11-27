@@ -25,8 +25,8 @@ public class MongoConfig {
 //    @Bean
 //    CommandLineRunner commandLineRunnerUser(UserRepository userRepository){
 //        return String ->{
-//            userRepository.save(new User(1, "kisbela", "Kis Bela", "kisbela@kisbela.hu", "pw1"));
-//            userRepository.save(new User(2, "nagyadi", "Nagy Adam", "nagyadi@nagyadi.hu", "pw2" ));
+//            userRepository.save(new User(1, "kisbela", "Kis Bela", "kisbela@kisbela.hu", "pw1", Timestamp.valueOf("2000-11-27 00:00:00.0").getTime()));
+//            userRepository.save(new User(2, "nagyadi", "Nagy Adam", "nagyadi@nagyadi.hu", "pw2", Timestamp.valueOf("2001-09-23 00:00:00.0").getTime()));
 //        };
 //    }
 //

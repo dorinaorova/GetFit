@@ -3,8 +3,6 @@ package hu.temalabor.GetFit.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Document("User")
 public class User {
     @Id
@@ -15,18 +13,19 @@ public class User {
     private String Password;        //jelszo
     private int Points;             //pontok
     private int Level;              //szint
-    private Date Birthdate;         //szuletesi ido
+    private long Birthdate;         //szuletesi ido
     private int Height;             //magasssag
     private int Weight;             //suly
     private boolean Gender;         //nem true=No; false=Ferfi
 
-    public User(int _id, String Username, String Name, String Email, String Password) {
+    public User(int _id, String Username, String Name, String Email, String Password, long Birthdate) {
         super();
         this._id = _id;
         this.Username = Username;
         this.Name = Name;
         this.Email = Email;
         this.Password = Password;
+        this.Birthdate=Birthdate;
         Points = 0;
         Level = 0;
     }
@@ -70,7 +69,7 @@ public class User {
         return Level;
     }
 
-    public Date getBirthdate() {
+    public long getBirthdate() {
         return Birthdate;
     }
 
@@ -86,7 +85,7 @@ public class User {
         Name = name;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(long birthdate) {
         Birthdate = birthdate;
     }
 
