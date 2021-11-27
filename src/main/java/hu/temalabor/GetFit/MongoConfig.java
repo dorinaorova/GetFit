@@ -1,14 +1,7 @@
 package hu.temalabor.GetFit;
 
-import hu.temalabor.GetFit.model.Goal;
-import hu.temalabor.GetFit.repository.GoalRepository;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import java.sql.Timestamp;
-import java.time.Instant;
 
 @EnableMongoRepositories
 @Configuration
@@ -21,13 +14,13 @@ public class MongoConfig {
 //        };
 //    }
 //
-    @Bean
-    CommandLineRunner commandLineRunnerGoal(GoalRepository goalRepository){
-        return String ->{
-            goalRepository.save(new Goal(1, 4, 1, Long.parseLong(Timestamp.from(Instant.now()).toString())));
-            goalRepository.save(new Goal(2, 3, 2, Long.parseLong(Timestamp.from(Instant.now()).toString())));
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunnerGoal(GoalRepository goalRepository){
+//        return String ->{
+//            goalRepository.save(new Goal(1, 4, 1, Timestamp.from(Instant.now()).getTime()));
+//            goalRepository.save(new Goal(2, 3, 2, Timestamp.from(Instant.now()).getTime()));
+//        };
+//    }
 //
 //    @Bean
 //    CommandLineRunner commandLineRunnerUser(UserRepository userRepository){
@@ -40,8 +33,8 @@ public class MongoConfig {
 //    @Bean
 //    CommandLineRunner commandLineRunnerActivity(ActivityRepository activityRepository){
 //        return String ->{
-//            activityRepository.save(new Activity(1, 1, 1, 60, new Date(2021,10,22)));
-//            activityRepository.save(new Activity(2, 2, 1, 30, new Date(2021,10,23)));
+//            activityRepository.save(new Activity(1, 1, 1, 60, Timestamp.from(Instant.now()).getTime()));
+//            activityRepository.save(new Activity(2, 2, 1, 30, Timestamp.from(Instant.now()).getTime()));
 //        };
 //    }
 //

@@ -7,28 +7,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Activity {
     @Id
     private int _id;                 //azonosito
-    private int SportId;            //sport azonosito
+    private int sportId;            //sport azonosito
     private int userId;             //felhasznalo azonosito
     private double Time;             //sporttal tolott ido (perc)
     private long Date;    //sportolas kezdete
     private double Kcal;             //elegetett kaloriak
-    private Sport sport;
-    private User user;
+    private Sport _sport;
+    private User _user;
     private double Distance;
 
 
-    public Activity(int _id, int SportId, int userId, double Time, long Date) {
+    public Activity(int _id, int sportId, int userId, double Time, long Date) {
         super();
         this._id = _id;
-        this.SportId = SportId;
+        this.sportId = sportId;
         this.userId = userId;
         this.Time = Time;
-        this.Date = Date;
+        this.Date=Date;
     }
 
 
     public void setKcal (){
-        Kcal= sport.getKcal()* user.getWeight()*Time;
+        Kcal= _sport.getKcal()* _user.getWeight()*Time;
     }
 
     public void set_id(int _id) {
@@ -48,7 +48,7 @@ public class Activity {
     }
 
     public void setSportId(int sportId) {
-        SportId = sportId;
+        sportId = sportId;
     }
 
     public void setTime(double time) {
@@ -60,7 +60,7 @@ public class Activity {
     }
 
     public int getSportId() {
-        return SportId;
+        return sportId;
     }
 
     public int getUserId() {
