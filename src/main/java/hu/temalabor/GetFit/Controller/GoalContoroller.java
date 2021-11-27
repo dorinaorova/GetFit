@@ -54,7 +54,6 @@ public class GoalContoroller {
             Calendar cal = Calendar.getInstance();
             Timestamp ts = new Timestamp(a.getDateStart()); //the day when the goal started
             cal.setTime(new Date(ts.getTime()));
-            //cal.add(Calendar.DATE, -7); //7 days before the goal started
 
             if(calendar.before(cal)){
                 calendar.add(Calendar.DATE, 7); //9?

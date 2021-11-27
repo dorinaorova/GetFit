@@ -68,7 +68,6 @@ public class ActivityController {
             Calendar cal = Calendar.getInstance();
             Timestamp ts = new Timestamp(a.getDate());
             cal.setTime(new Date(ts.getTime()));
-            //cal.add(Calendar.DATE, -7); //8?
 
             if(calendar.before(cal)){
                 calendar.add(Calendar.DATE, 7); //9?
