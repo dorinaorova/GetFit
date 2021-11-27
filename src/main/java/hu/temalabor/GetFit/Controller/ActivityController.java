@@ -44,8 +44,8 @@ public class ActivityController {
     }
 
     @GetMapping("/id={id}/sportId={sportid}")
-    public List<Activity> GetActivityBySportId(@PathVariable(value = "sportid") int id){
-        List<Activity> activitiesBySportID= activityRepository.findBySportId(id);
+    public List<Activity> GetActivityBySportId(@PathVariable(value = "sportid") int sportid, @PathVariable(value = "id") int id){
+        List<Activity> activitiesBySportID= activityRepository.findBySportId(sportid);
         List<Activity> activities = new ArrayList<>();
         for(Activity a: activitiesBySportID){
             if(a.getUserId()==id){
