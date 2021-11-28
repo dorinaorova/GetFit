@@ -62,6 +62,7 @@ public class GoalContoroller {
             counterRepository.save(cnt);
         }
         newGoal.set_id(cnt.getCounter());
+        newGoal.setCurrentAmount(0);
         goalRepository.save(newGoal);
     }
 

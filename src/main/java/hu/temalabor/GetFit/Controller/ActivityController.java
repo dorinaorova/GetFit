@@ -97,38 +97,43 @@ public class ActivityController {
             cnt.increaseCounter();
             counterRepository.save(cnt);
         }
+        newActivity.set_id(cnt.getCounter()); //set id
 
 
-
+//set goal status and current amount------------------------------
         List<Goal> goals = goalRepository.findByUserId(newActivity.getUserId());
         //find the goal for the week
-        GoalContoroller ac = new GoalContoroller(goalRepository, counterRepository);
+        GoalContoroller gc = new GoalContoroller(goalRepository, counterRepository);
 
-        
-        Goal goal= ac.getGoalForAWeekFun(newActivity.getDate(), goals).get(0);
+
+        Goal goal= gc.getGoalForAWeekFun(newActivity.getDate(), goals).get(0);
         //TODO: not founded --> make new goal for the week
 
+
+        //find the user
         User user=null;
         Optional<User> userData = userRepository.findById(newActivity.getUserId());
         if (userData.isPresent()) {
             user = userData.get();
         }
 
+        //find the sport
         Sport sp = null;
-        newActivity.set_id(cnt.getCounter());
         Optional<Sport> sportData = sportRepository.findById(newActivity.getSportId());
         System.out.println(sportData);
         if(sportData.isPresent()){
             sp= sportData.get();
             System.out.println(sp.get_id());
         }
+
+        //set Kcal
         newActivity.setKcal(sp.getKcal(), user.getWeight());
-        activityRepository.save(newActivity);
+        activityRepository.save(newActivity); //save activity
 
         //found --> is this succesfull?
         if(goal!=null) {
 
-            goal.setCurrentAmount(1);
+            goal.addCurrentAmount(1);
             goalRepository.save(goal);
 
             if (goal.getStatus() == 1) {
