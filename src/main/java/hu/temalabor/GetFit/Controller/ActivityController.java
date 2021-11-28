@@ -4,9 +4,11 @@ package hu.temalabor.GetFit.Controller;
 import hu.temalabor.GetFit.model.Activity;
 import hu.temalabor.GetFit.model.Counter;
 import hu.temalabor.GetFit.model.Goal;
+import hu.temalabor.GetFit.model.User;
 import hu.temalabor.GetFit.repository.ActivityRepository;
 import hu.temalabor.GetFit.repository.CounterRepository;
 import hu.temalabor.GetFit.repository.GoalRepository;
+import hu.temalabor.GetFit.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -19,6 +21,7 @@ public class ActivityController {
     GoalRepository goalRepository;
     ActivityRepository activityRepository;
     CounterRepository counterRepository;
+    UserRepository userRepository;
     public ActivityController(ActivityRepository activityRepository, GoalRepository goalRepository, CounterRepository counterRepository){
         this.activityRepository=activityRepository;
         this.goalRepository=goalRepository;
@@ -97,12 +100,14 @@ public class ActivityController {
 
         List<Goal> goals = goalRepository.findByUserId(newActivity.getUserId());
 
+
+        //find the goal for the week
         Goal goal=null;
         Calendar calendar = Calendar.getInstance();
         Timestamp ts = new Timestamp(newActivity.getDate());
         calendar.setTime(new Date(ts.getTime()));
         int days= calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE,-days); //first day of week
+        calendar.add(Calendar.DATE,-days+calendar.getFirstDayOfWeek()); //first day of week
 
         for(Goal a : goals){
             Calendar cal = calendar.getInstance();
@@ -110,14 +115,17 @@ public class ActivityController {
             cal.setTime(new Date(ts_goal.getTime()));
             cal.add(Calendar.DATE, -7); //8?
 
-            if(newActivity.getUserId() == a.getUserId() && calendar.after(cal)){
+            if(calendar.before(cal)){
                 cal.add(Calendar.DATE, 7); //9?
-                if(calendar.before(cal)) {
+                if(calendar.after(cal)) {
                     goal=a;
                     break;
                 }
             }
         }
+        //TODO: not founded --> make new goal for the week
+
+        //found --> is this succesfull?
         if(goal!=null) {
             goal.setAmount(1);
 
@@ -125,9 +133,22 @@ public class ActivityController {
             if (goalData.isPresent()) {
                 Goal uGoal = goalData.get();
                 uGoal = goal;
+                uGoal.SetStatus();
                 goalRepository.save(uGoal);
             }
         }
+
+        if(goal.getStatus()==1) {
+            //user gets points
+            Optional<User> userData = userRepository.findById(newActivity.getUserId());
+            if (userData.isPresent()) {
+                User user = userData.get();
+                user.setPoints(goal.getAmount());
+                user.setLevel();
+                userRepository.save(user);
+            }
+        }
+
     }
 
     @PutMapping("/{id}")

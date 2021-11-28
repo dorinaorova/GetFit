@@ -78,7 +78,7 @@ public class User {
     }
 
     public void setPoints(int points) {
-        Points = points;
+        Points += points;
     }
 
     public void setName(String name) {

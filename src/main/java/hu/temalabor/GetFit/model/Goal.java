@@ -15,8 +15,8 @@ public class Goal {
     private int Amount;
     private int userId;
     private long DateStart;
-    private int CurrentAmount;
-    private int Status;
+    private int CurrentAmount =0;
+    private int Status = 0;
 
     public Goal(int _id, int Amount, int userId, long DateStart) {
         super();
@@ -35,7 +35,9 @@ public class Goal {
         cal.setTime(new Date(ts.getTime()));
         cal.add(Calendar.DATE, 7);
         if (Calendar.getInstance().after(cal) && CurrentAmount<Amount) Status =0;   //lejart az egy het, nem sikerult teljesiteni
-        else if(CurrentAmount>=Amount) Status = 1;                                  //teljesitette
+        else if(CurrentAmount>=Amount) {
+            Status = 1;                                                             //teljesitette
+        }
         else Status =2;                                                             //meg folyamatban van
     }
 
