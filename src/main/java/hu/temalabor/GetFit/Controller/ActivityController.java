@@ -74,7 +74,11 @@ public class ActivityController {
 
             if(calendar.before(cal)){
                 calendar.add(Calendar.DATE, 7); //9?
-                if(calendar.after(cal))  activitiesForAWeek.add(a);
+                if(calendar.after(cal))  {
+                    activitiesForAWeek.add(a);
+                    calendar.add(Calendar.DATE, -7); //9?
+
+                }
             }
         }
         return activitiesForAWeek;
@@ -94,42 +98,20 @@ public class ActivityController {
             cnt.increaseCounter();
             counterRepository.save(cnt);
         }
+
         newActivity.set_id(cnt.getCounter());
         activityRepository.save(newActivity);
 
 
         List<Goal> goals = goalRepository.findByUserId(newActivity.getUserId());
-
-
         //find the goal for the week
-        Goal goal=null;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        Timestamp ts = new Timestamp(newActivity.getDate());
-        calendar.setTime(new Date(ts.getTime()));
-        int days= calendar.get(Calendar.DAY_OF_WEEK);
-        if (days==1) days+=7;
-        days-=calendar.getFirstDayOfWeek();
-        calendar.add(Calendar.DATE,-days); //first day of week
-
-        for(Goal a : goals){
-            Calendar cal = calendar.getInstance();
-            Timestamp ts_goal = new Timestamp(a.getDateStart());
-            cal.setTime(new Date(ts_goal.getTime()));
-            cal.add(Calendar.DATE, -7); //8?
-
-            if(calendar.before(cal)){
-                cal.add(Calendar.DATE, 7); //9?
-                if(calendar.after(cal)) {
-                    goal=a;
-                    break;
-                }
-            }
-        }
+        GoalContoroller ac = new GoalContoroller(goalRepository, counterRepository);
+        Goal goal= ac.getGoalForAWeekFun(newActivity.getDate(), goals).get(0);
         //TODO: not founded --> make new goal for the week
 
         //found --> is this succesfull?
         if(goal!=null) {
+
             goal.setAmount(1);
 
             Optional<Goal> goalData = goalRepository.findById(goal.get_id());
@@ -139,16 +121,17 @@ public class ActivityController {
                 uGoal.SetStatus();
                 goalRepository.save(uGoal);
             }
-        }
 
-        if(goal.getStatus()==1) {
-            //user gets points
-            Optional<User> userData = userRepository.findById(newActivity.getUserId());
-            if (userData.isPresent()) {
-                User user = userData.get();
-                user.setPoints(goal.getAmount());
-                user.setLevel();
-                userRepository.save(user);
+
+            if (goal.getStatus() == 1) {
+                //user gets points
+                Optional<User> userData = userRepository.findById(newActivity.getUserId());
+                if (userData.isPresent()) {
+                    User user = userData.get();
+                    user.setPoints(goal.getAmount());
+                    user.setLevel();
+                    userRepository.save(user);
+                }
             }
         }
 

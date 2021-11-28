@@ -43,27 +43,7 @@ public class GoalContoroller {
     List<Goal> GetGoalForAWeek(@PathVariable(value="date") long date, @PathVariable(value="id") int id){
         //find goals by user id: --> user's goals
         List<Goal> goals =goalRepository.findByUserId(id);
-        List<Goal> goalsForAWeek = new ArrayList<>(); //empty list
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.setTime( new Timestamp(date));
-        int days= calendar.get(Calendar.DAY_OF_WEEK);
-        if (days==1) days+=7;
-        days-=calendar.getFirstDayOfWeek();
-        calendar.add(Calendar.DATE,-days); //first day of week
-
-        for(Goal a : goals){
-            Calendar cal = Calendar.getInstance();
-            Timestamp ts = new Timestamp(a.getDateStart()); //the day when the goal started
-            cal.setTime(new Date(ts.getTime()));
-
-            if(calendar.before(cal)){
-                calendar.add(Calendar.DATE, 7); //9?
-                if(calendar.after(cal))  goalsForAWeek.add(a);
-            }
-        }
-        return goalsForAWeek;
+        return  getGoalForAWeekFun(date, goals);
     }
 
     @DeleteMapping("/{id}")
@@ -94,6 +74,33 @@ public class GoalContoroller {
             goal.set_id(id);
             goalRepository.save(goal);
         }
+    }
+
+    public List<Goal> getGoalForAWeekFun(long date, List<Goal> goals){
+        List<Goal> goalsForAWeek=new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setTime( new Timestamp(date));
+        int days= calendar.get(Calendar.DAY_OF_WEEK);
+        if (days==1) days+=7;
+        days-=calendar.getFirstDayOfWeek();
+        calendar.add(Calendar.DATE,-days); //first day of week
+
+        for(Goal a : goals){
+            Calendar cal = Calendar.getInstance();
+            Timestamp ts = new Timestamp(a.getDateStart()); //the day when the goal started
+            cal.setTime(ts);
+
+            if(calendar.before(cal)){
+                calendar.add(Calendar.DATE, 7); //9?
+                if(calendar.after(cal))  {
+                    goalsForAWeek.add(a);
+
+                }
+                calendar.add(Calendar.DATE, -7);
+            }
+        }
+        return goalsForAWeek;
     }
 
 
