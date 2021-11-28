@@ -103,6 +103,8 @@ public class ActivityController {
         List<Goal> goals = goalRepository.findByUserId(newActivity.getUserId());
         //find the goal for the week
         GoalContoroller ac = new GoalContoroller(goalRepository, counterRepository);
+
+        
         Goal goal= ac.getGoalForAWeekFun(newActivity.getDate(), goals).get(0);
         //TODO: not founded --> make new goal for the week
 
@@ -126,16 +128,8 @@ public class ActivityController {
         //found --> is this succesfull?
         if(goal!=null) {
 
-            goal.setAmount(1);
-
-            Optional<Goal> goalData = goalRepository.findById(goal.get_id());
-            if (goalData.isPresent()) {
-                Goal uGoal = goalData.get();
-                uGoal = goal;
-                uGoal.SetStatus();
-                goalRepository.save(uGoal);
-            }
-
+            goal.setCurrentAmount(1);
+            goalRepository.save(goal);
 
             if (goal.getStatus() == 1) {
                 //user gets points

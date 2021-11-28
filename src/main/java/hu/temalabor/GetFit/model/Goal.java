@@ -14,7 +14,7 @@ public class Goal {
     private int Amount;
     private int userId;
     private long DateStart;
-    private int CurrentAmount =0;
+    private int CurrentAmount ;
     private int Status = 0;
 
     public Goal(int _id, int Amount, int userId, long DateStart) {
@@ -78,9 +78,9 @@ public class Goal {
         Amount = amount;
     }
 
-//    public void setCurrentAmount(int currentAmount) {
-//        CurrentAmount += currentAmount;
-//    }
+    public void setCurrentAmount(int currentAmount) {
+        CurrentAmount += currentAmount;
+    }
 
     public void setUserId(int userId) {
         this.userId = userId;
