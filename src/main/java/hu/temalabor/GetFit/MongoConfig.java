@@ -18,6 +18,7 @@ public class MongoConfig {
 //    CommandLineRunner commandLineRunnerGoal(GoalRepository goalRepository){
 //        return String ->{
 //            goalRepository.save(new Goal(1, 4, 1, Timestamp.from(Instant.now()).getTime()));
+//            goalRepository.save(new Goal(3, 4, 1, Timestamp.from(Instant.now()).getTime()));
 //            goalRepository.save(new Goal(2, 3, 2, Timestamp.from(Instant.now()).getTime()));
 //        };
 //    }
@@ -41,10 +42,10 @@ public class MongoConfig {
 //    @Bean
 //    CommandLineRunner commandLineRunnerCounter(CounterRepository counterRepository){
 //        return String ->{
-//            counterRepository.save(new Counter("Activity", 2));
-//            counterRepository.save(new Counter("Sport", 2));
-//            counterRepository.save(new Counter("User", 2));
-//            counterRepository.save(new Counter("Goal", 2));
+//            //counterRepository.save(new Counter("Activity", 2));
+//            //counterRepository.save(new Counter("Sport", 2));
+//            //counterRepository.save(new Counter("User", 2));
+//            counterRepository.save(new Counter("Goal", 3));
 //        };
 //    }
 }

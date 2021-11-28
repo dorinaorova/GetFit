@@ -11,7 +11,6 @@ import java.util.Date;
 public class Goal {
     @Id
     private int _id;
-    private int Type;
     private int Amount;
     private int userId;
     private long DateStart;
@@ -21,7 +20,6 @@ public class Goal {
     public Goal(int _id, int Amount, int userId, long DateStart) {
         super();
         this._id = _id;
-        Type = 0;
         this.Amount = Amount;
         this.userId = userId;
         this.DateStart = DateStart;
@@ -33,7 +31,11 @@ public class Goal {
         Calendar cal = Calendar.getInstance();
         Timestamp ts = new Timestamp(DateStart);
         cal.setTime(new Date(ts.getTime()));
-        cal.add(Calendar.DATE, 7);
+        int days= cal.get(Calendar.DAY_OF_WEEK);
+        if (days==1) days+=7;
+        days-=cal.getFirstDayOfWeek();
+        cal.add(Calendar.DATE,-days); //first day of week
+
         if (Calendar.getInstance().after(cal) && CurrentAmount<Amount) Status =0;   //lejart az egy het, nem sikerult teljesiteni
         else if(CurrentAmount>=Amount) {
             Status = 1;                                                             //teljesitette
@@ -67,9 +69,6 @@ public class Goal {
     }
 
     //SETTERS
-    public void setType(int type) {
-        Type = type;
-    }
 
     public void set_id(int _id) {
         this._id = _id;
@@ -79,9 +78,9 @@ public class Goal {
         Amount = amount;
     }
 
-    public void setCurrentAmount(int currentAmount) {
-        CurrentAmount += currentAmount;
-    }
+//    public void setCurrentAmount(int currentAmount) {
+//        CurrentAmount += currentAmount;
+//    }
 
     public void setUserId(int userId) {
         this.userId = userId;

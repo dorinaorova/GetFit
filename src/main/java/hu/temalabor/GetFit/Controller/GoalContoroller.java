@@ -46,9 +46,12 @@ public class GoalContoroller {
         List<Goal> goalsForAWeek = new ArrayList<>(); //empty list
 
         Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setTime( new Timestamp(date));
         int days= calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE,-days+calendar.getFirstDayOfWeek()); //first day of week
+        if (days==1) days+=7;
+        days-=calendar.getFirstDayOfWeek();
+        calendar.add(Calendar.DATE,-days); //first day of week
 
         for(Goal a : goals){
             Calendar cal = Calendar.getInstance();
