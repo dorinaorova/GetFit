@@ -30,15 +30,11 @@ public class User {
         Level = 0;
     }
 
-    public double getWeight() {
+    public int getWeight() {
         return Weight;
     }
-    public double getHeight() {
+    public int getHeight() {
         return Height;
-    }
-
-    public double BMI(){
-        return Height/Weight;
     }
 
     public int get_id() {

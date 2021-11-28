@@ -1,14 +1,8 @@
 package hu.temalabor.GetFit.Controller;
 
 
-import hu.temalabor.GetFit.model.Activity;
-import hu.temalabor.GetFit.model.Counter;
-import hu.temalabor.GetFit.model.Goal;
-import hu.temalabor.GetFit.model.User;
-import hu.temalabor.GetFit.repository.ActivityRepository;
-import hu.temalabor.GetFit.repository.CounterRepository;
-import hu.temalabor.GetFit.repository.GoalRepository;
-import hu.temalabor.GetFit.repository.UserRepository;
+import hu.temalabor.GetFit.model.*;
+import hu.temalabor.GetFit.repository.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -22,10 +16,13 @@ public class ActivityController {
     ActivityRepository activityRepository;
     CounterRepository counterRepository;
     UserRepository userRepository;
-    public ActivityController(ActivityRepository activityRepository, GoalRepository goalRepository, CounterRepository counterRepository){
+    SportRepository sportRepository;
+    public ActivityController(ActivityRepository activityRepository, GoalRepository goalRepository, CounterRepository counterRepository, SportRepository sportRepository, UserRepository userRepository){
         this.activityRepository=activityRepository;
         this.goalRepository=goalRepository;
         this.counterRepository=counterRepository;
+        this.sportRepository = sportRepository;
+        this.userRepository=userRepository;
     }
 
 
@@ -99,8 +96,6 @@ public class ActivityController {
             counterRepository.save(cnt);
         }
 
-        newActivity.set_id(cnt.getCounter());
-        activityRepository.save(newActivity);
 
 
         List<Goal> goals = goalRepository.findByUserId(newActivity.getUserId());
@@ -108,6 +103,23 @@ public class ActivityController {
         GoalContoroller ac = new GoalContoroller(goalRepository, counterRepository);
         Goal goal= ac.getGoalForAWeekFun(newActivity.getDate(), goals).get(0);
         //TODO: not founded --> make new goal for the week
+
+        User user=null;
+        Optional<User> userData = userRepository.findById(newActivity.getUserId());
+        if (userData.isPresent()) {
+            user = userData.get();
+        }
+
+        Sport sp = null;
+        newActivity.set_id(cnt.getCounter());
+        Optional<Sport> sportData = sportRepository.findById(newActivity.getSportId());
+        System.out.println(sportData);
+        if(sportData.isPresent()){
+            sp= sportData.get();
+            System.out.println(sp.get_id());
+        }
+        newActivity.setKcal(sp.getKcal(), user.getWeight());
+        activityRepository.save(newActivity);
 
         //found --> is this succesfull?
         if(goal!=null) {
@@ -125,15 +137,11 @@ public class ActivityController {
 
             if (goal.getStatus() == 1) {
                 //user gets points
-                Optional<User> userData = userRepository.findById(newActivity.getUserId());
-                if (userData.isPresent()) {
-                    User user = userData.get();
                     user.setPoints(goal.getAmount());
                     user.setLevel();
                     userRepository.save(user);
                 }
             }
-        }
 
     }
 

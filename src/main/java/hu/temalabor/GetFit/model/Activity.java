@@ -12,8 +12,6 @@ public class Activity {
     private double Time;             //sporttal tolott ido (perc)
     private long Date;    //sportolas kezdete
     private double Kcal;             //elegetett kaloriak
-    private Sport _sport;
-    private User _user;
     private double Distance;
 
 
@@ -27,8 +25,8 @@ public class Activity {
     }
 
 
-    public void setKcal (){
-        Kcal= _sport.getKcal()* _user.getWeight()*Time;
+    public void setKcal (double kcal, int weight){
+        Kcal= kcal*weight*Time;
     }
 
     public void set_id(int _id) {
