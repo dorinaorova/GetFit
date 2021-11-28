@@ -14,8 +14,8 @@ public class User {
     private int Points;             //pontok
     private int Level;              //szint
     private long Birthdate;         //szuletesi ido
-    private int Height;             //magasssag
-    private int Weight;             //suly
+    private double Height;             //magasssag
+    private double Weight;             //suly
     private boolean Gender;         //nem true=No; false=Ferfi
 
     public User(int _id, String Username, String Name, String Email, String Password, long Birthdate) {
@@ -30,10 +30,10 @@ public class User {
         Level = 0;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return Weight;
     }
-    public int getHeight() {
+    public double getHeight() {
         return Height;
     }
 
@@ -93,7 +93,7 @@ public class User {
         this._id = _id;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         Height = height;
     }
 
@@ -113,7 +113,7 @@ public class User {
         Username = username;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         Weight = weight;
     }
 

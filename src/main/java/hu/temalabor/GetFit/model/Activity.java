@@ -37,7 +37,7 @@ public class Activity {
         this.userId = userId;
     }
 
-    public void setKcal(double kcal) {
+    public void setKcal(double spKcal, double kcal) {
         Kcal = kcal;
     }
 

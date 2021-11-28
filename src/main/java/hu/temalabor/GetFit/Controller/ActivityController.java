@@ -60,22 +60,24 @@ public class ActivityController {
         List<Activity> activities = activityRepository.findByUserId(id);
         List<Activity> activitiesForAWeek = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setTime( new Timestamp(date));
         int days= calendar.get(Calendar.DAY_OF_WEEK);
-        calendar.add(Calendar.DATE,-days+calendar.getFirstDayOfWeek()); //first day of week
+        if (days==1) days+=7;
+        days-=calendar.getFirstDayOfWeek();
+        calendar.add(Calendar.DATE,-days); //first day of week
 
         for(Activity a : activities){
             Calendar cal = Calendar.getInstance();
             Timestamp ts = new Timestamp(a.getDate());
-            cal.setTime(new Date(ts.getTime()));
+            cal.setTime(ts);
 
             if(calendar.before(cal)){
                 calendar.add(Calendar.DATE, 7); //9?
                 if(calendar.after(cal))  {
                     activitiesForAWeek.add(a);
-                    calendar.add(Calendar.DATE, -7); //9?
-
                 }
+                calendar.add(Calendar.DATE, -7); //9?
             }
         }
         return activitiesForAWeek;
