@@ -24,28 +24,27 @@ public class Goal {
         this.userId = userId;
         this.CurrentAmount = CurrentAmount;
         this.DateStart = DateStart;
-        SetStatus();
+        CountStatus();
     }
 
-    public void SetStatus(){
+    public void CountStatus(){
+        System.out.println(_id);
         Calendar cal = Calendar.getInstance();
+        System.out.println(cal);
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         Timestamp ts = new Timestamp(DateStart);
         cal.setTime(new Date(ts.getTime()));
         int days= cal.get(Calendar.DAY_OF_WEEK);
         if (days==1) days+=7;
         days-=cal.getFirstDayOfWeek();
-        cal.add(Calendar.DATE,-days+7); //first day of week
+        cal.add(Calendar.DATE,-days+7); //first day of next week
 
-        System.out.println("cur: "+getCurrentAmount());
-        System.out.println("am: "+getAmount());
         if (Calendar.getInstance().after(cal) && CurrentAmount<Amount) Status =0;   //lejart az egy het, nem sikerult teljesiteni
 
         else if(CurrentAmount>=Amount) {
             Status = 1;                                                             //teljesitette
         }
         else Status =2;                                                             //meg folyamatban van
-        System.out.println("stat: "+Status);
     }
 
     //GETTERS
@@ -88,7 +87,7 @@ public class Goal {
 
     public void addCurrentAmount(int currentAmount) {
         CurrentAmount += currentAmount;
-        SetStatus();
+        CountStatus();
     }
 
     public void setUserId(int userId) {
@@ -98,5 +97,6 @@ public class Goal {
     public void setDateStart(long dateStart) {
         DateStart = dateStart;
     }
+    public void setStatus(int status) {Status=status;}
 
 }

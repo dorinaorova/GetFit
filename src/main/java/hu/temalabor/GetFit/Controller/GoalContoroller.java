@@ -63,6 +63,7 @@ public class GoalContoroller {
         }
         newGoal.set_id(cnt.getCounter());
         newGoal.setCurrentAmount(0);
+        newGoal.CountStatus();
         goalRepository.save(newGoal);
     }
 
@@ -73,6 +74,7 @@ public class GoalContoroller {
             Goal goal = goalData.get();
             goal=uGoal;
             goal.set_id(id);
+            goal.CountStatus();
             goalRepository.save(goal);
         }
     }

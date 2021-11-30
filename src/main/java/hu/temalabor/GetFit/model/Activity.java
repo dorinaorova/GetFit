@@ -46,7 +46,7 @@ public class Activity {
     }
 
     public void setSportId(int sportId) {
-        sportId = sportId;
+        this.sportId = sportId;
     }
 
     public void setTime(double time) {
