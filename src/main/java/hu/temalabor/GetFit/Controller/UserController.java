@@ -1,9 +1,13 @@
 package hu.temalabor.GetFit.Controller;
 
 
+import hu.temalabor.GetFit.model.Activity;
 import hu.temalabor.GetFit.model.Counter;
+import hu.temalabor.GetFit.model.Goal;
 import hu.temalabor.GetFit.model.User;
+import hu.temalabor.GetFit.repository.ActivityRepository;
 import hu.temalabor.GetFit.repository.CounterRepository;
+import hu.temalabor.GetFit.repository.GoalRepository;
 import hu.temalabor.GetFit.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +20,14 @@ import java.util.Optional;
 public class UserController {
     private UserRepository userRepository;
     private CounterRepository counterRepository;
+    private ActivityRepository activityRepository;
+    private GoalRepository goalRepository;
 
-    public UserController(UserRepository userRepository, CounterRepository counterRepository) {
+    public UserController(UserRepository userRepository, CounterRepository counterRepository, ActivityRepository activityRepository, GoalRepository goalRepository) {
         this.userRepository = userRepository;
         this.counterRepository=counterRepository;
+        this.activityRepository = activityRepository;
+        this.goalRepository=goalRepository;
     }
 
 
@@ -50,6 +58,14 @@ public class UserController {
     @DeleteMapping("/{id}")
     void DeleteUserById(@PathVariable(value="id") int id){
         userRepository.deleteById(id);
+        List<Goal> goals= goalRepository.findByUserId(id);
+        for (Goal g: goals){
+            goalRepository.deleteById(g.get_id());
+        }
+        List<Activity> activities= activityRepository.findByUserId(id);
+        for (Activity a: activities){
+            activityRepository.deleteById(a.get_id());
+        }
     }
 
     @PostMapping
@@ -62,7 +78,10 @@ public class UserController {
             counterRepository.save(cnt);
         }
         newUser.set_id(cnt.getCounter());
+        newUser.setPoints(0);
+        newUser.setLevel();
         userRepository.save(newUser);
+
     }
 
     @PutMapping("/{id}")
@@ -70,8 +89,11 @@ public class UserController {
         Optional<User> userData = userRepository.findById(id);
         if(userData.isPresent()){
             User user = userData.get();
+            int points = user.getPoints();
             user=uUser;
             user.set_id(id);
+            user.setPoints(points);
+            user.setLevel();
             userRepository.save(user);
         }
     }

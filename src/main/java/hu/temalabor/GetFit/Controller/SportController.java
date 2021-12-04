@@ -34,11 +34,6 @@ public class SportController {
         return sportRepository.findById(id);
     }
 
-    @DeleteMapping("/{id}")
-    void DeleteSportById(@PathVariable(value="id") int id){
-        sportRepository.deleteById(id);
-    }
-
     @PostMapping
     void NewSport(@RequestBody Sport newSport){
         Counter cnt= null;

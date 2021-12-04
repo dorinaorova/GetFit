@@ -25,9 +25,10 @@ public class Activity {
     }
 
 
-    public void setKcal (double kcal, int weight){
+    public void calculateKcal(double kcal, double weight){
         Kcal= kcal*weight*Time;
     }
+    public void setKcal(double kcal){Kcal=kcal;}
 
     public void set_id(int _id) {
         this._id = _id;
@@ -37,9 +38,6 @@ public class Activity {
         this.userId = userId;
     }
 
-    public void setKcal(double spKcal, double kcal) {
-        Kcal = kcal;
-    }
 
     public void setDate(long date) {
         Date = date;

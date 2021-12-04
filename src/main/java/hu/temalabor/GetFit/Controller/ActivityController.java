@@ -6,7 +6,10 @@ import hu.temalabor.GetFit.repository.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/ActivityController")
@@ -43,7 +46,7 @@ public class ActivityController {
         return activityRepository.findByUserId(id);
     }
 
-    @GetMapping("/id={id}/sportId={sportid}")
+    @GetMapping("/userId={id}/sportId={sportid}")
     public List<Activity> GetActivityBySportId(@PathVariable(value = "sportid") int sportid, @PathVariable(value = "id") int id){
         List<Activity> activitiesBySportID= activityRepository.findBySportId(sportid);
         List<Activity> activities = new ArrayList<>();
@@ -106,10 +109,6 @@ public class ActivityController {
         GoalContoroller gc = new GoalContoroller(goalRepository, counterRepository);
 
 
-        Goal goal= gc.getGoalForAWeekFun(newActivity.getDate(), goals).get(0);
-        //TODO: not founded --> make new goal for the week
-
-
         //find the user
         User user=null;
         Optional<User> userData = userRepository.findById(newActivity.getUserId());
@@ -126,24 +125,29 @@ public class ActivityController {
             System.out.println(sp.get_id());
         }
 
-        //set Kcal
-        newActivity.setKcal(sp.getKcal(), user.getWeight());
-        activityRepository.save(newActivity); //save activity
+        if(sp!=null && user!=null) {
+            //set Kcal
+            newActivity.calculateKcal(sp.getKcal(), user.getWeight());
+            activityRepository.save(newActivity); //save activity
+        }
+        else return;
 
-        //found --> is this succesfull?
-        if(goal!=null) {
+        if (goals != null) {
+            Goal goal = gc.getGoalForAWeekFun(newActivity.getDate(), goals).get(0);
 
-            goal.addCurrentAmount(1);
-            goalRepository.save(goal);
+            if (goal != null) {
 
-            if (goal.getStatus() == 1) {
-                //user gets points
-                    user.setPoints(goal.getAmount());
+                goal.addCurrentAmount(1);
+                goalRepository.save(goal);
+
+                if (goal.getStatus() == 1) {
+                    //user gets points
+                    user.addPoints(goal.getAmount());
                     user.setLevel();
                     userRepository.save(user);
                 }
             }
-
+        }
     }
 
     @PutMapping("/{id}")

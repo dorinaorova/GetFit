@@ -72,8 +72,9 @@ public class User {
     public boolean getGender() {
         return Gender;
     }
+    public void setPoints(int i){Points=i;}
 
-    public void setPoints(int points) {
+    public void addPoints(int points) {
         Points += points;
     }
 

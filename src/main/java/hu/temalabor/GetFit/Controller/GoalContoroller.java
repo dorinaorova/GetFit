@@ -45,26 +45,24 @@ public class GoalContoroller {
         List<Goal> goals =goalRepository.findByUserId(id);
         return  getGoalForAWeekFun(date, goals);
     }
-
-    @DeleteMapping("/{id}")
-    void DeleteGoalById(@PathVariable(value="id") int id){
-        goalRepository.deleteById(id);
-    }
+    
 
     @PostMapping
     void NewGoal(@RequestBody Goal newGoal){
-
-        Counter cnt= null;
-        Optional<Counter> c = counterRepository.findById("Goal");
-        if(c.isPresent()){
-            cnt = c.get();
-            cnt.increaseCounter();
-            counterRepository.save(cnt);
+        List<Goal> goals = getGoalForAWeekFun(newGoal.getDateStart(), goalRepository.findByUserId(newGoal.getUserId()));
+        if(goals!=null) {
+            Counter cnt = null;
+            Optional<Counter> c = counterRepository.findById("Goal");
+            if (c.isPresent()) {
+                cnt = c.get();
+                cnt.increaseCounter();
+                counterRepository.save(cnt);
+            }
+            newGoal.set_id(cnt.getCounter());
+            newGoal.setCurrentAmount(0);
+            newGoal.CountStatus();
+            goalRepository.save(newGoal);
         }
-        newGoal.set_id(cnt.getCounter());
-        newGoal.setCurrentAmount(0);
-        newGoal.CountStatus();
-        goalRepository.save(newGoal);
     }
 
     @PutMapping("/{id}")
